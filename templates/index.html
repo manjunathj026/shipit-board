@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShipIt Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page: #E6EBEF;
+      --ink: #1D2A35;
+      --muted: #56656F;
+      --board: #1D2A35;
+      --flap: #2C3B48;
+      --flap-text: #F4C542;
+      --accent: {{ accent }};
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font: 1rem/1.55 "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    }
+    main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    h1 { font: 700 2.4rem/1 "Barlow Condensed", "Arial Narrow", sans-serif; margin: 0 0 1.5rem; }
+    .banner {
+      border-left: 0.5rem solid var(--accent);
+      background: #fff;
+      padding: 1rem 1.25rem;
+      font-size: 1.15rem;
+      margin-bottom: 1.5rem;
+    }
+    .board { background: var(--board); border-radius: 0.6rem; padding: 1.25rem; display: grid; gap: 0.9rem; margin: 0; }
+    .row { display: grid; grid-template-columns: 7.5rem 1fr; align-items: center; gap: 1rem; }
+    .row dt { color: #A9B6C0; font-size: 0.9rem; }
+    .row dd { margin: 0; display: flex; flex-wrap: wrap; gap: 3px; }
+    .flap {
+      display: inline-grid; place-items: center;
+      min-width: 1.5rem; height: 2.1rem; padding: 0 0.2rem;
+      background: var(--flap); border-radius: 3px; color: var(--flap-text);
+      font: 500 1.35rem/1 "Barlow Condensed", "Arial Narrow", sans-serif;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      position: relative;
+    }
+    .flap::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0,0,0,.5); }
+    .row dd.small { font-size: 0.85rem; color: #A9B6C0; display: block; }
+    h2 { font: 700 1.5rem/1.1 "Barlow Condensed", "Arial Narrow", sans-serif; margin: 2.5rem 0 0.75rem; }
+    form { display: flex; gap: 0.5rem; }
+    input[type=text] { flex: 1; padding: 0.65rem 0.8rem; font: inherit; border: 1px solid #B9C4CC; border-radius: 0.4rem; background: #fff; }
+    button { padding: 0.65rem 1.1rem; font: 600 1rem "IBM Plex Sans", sans-serif; background: var(--ink); color: #fff; border: 0; border-radius: 0.4rem; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    ul { padding-left: 1.2rem; }
+    .empty { color: var(--muted); }
+    @media (max-width: 30rem) {
+      .row { grid-template-columns: 1fr; gap: 0.35rem; }
+      form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>ShipIt Board</h1>
+
+  <div class="banner">{{ message }}</div>
+
+  <dl class="board" aria-label="What is running right now">
+    {% for label, value in [("Version", info.version), ("Commit", info.commit), ("Environment", info.environment)] %}
+    <div class="row">
+      <dt>{{ label }}</dt>
+      <dd>{% for ch in value %}<span class="flap">{{ ch }}</span>{% endfor %}</dd>
+    </div>
+    {% endfor %}
+    <div class="row">
+      <dt>Served by</dt>
+      <dd class="small">{{ info.host }}, running since {{ info.started_at }}</dd>
+    </div>
+  </dl>
+
+  <h2>Release notes</h2>
+  <form method="post" action="/notes">
+    <input id="text" name="text" type="text" maxlength="120" aria-label="Release note" placeholder="What did you just ship?" required>
+    <button type="submit">Add note</button>
+  </form>
+  {% if notes %}
+  <ul>{% for n in notes %}<li>{{ n }}</li>{% endfor %}</ul>
+  {% else %}
+  <p class="empty">No notes yet. Add one after your next deploy.</p>
+  {% endif %}
+</main>
+</body>
+</html>

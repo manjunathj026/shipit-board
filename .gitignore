@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+.env
+# Terraform (you'll need these later)
+.terraform/
+*.tfstate
+*.tfstate.*
