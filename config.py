@@ -5,5 +5,5 @@
 # the whole CI/CD chain works end to end.
 # ---------------------------------------------------------------
 
-MESSAGE = "My First Pipeline"   # plain text, shown in the banner
+MESSAGE = "My First Pipeline for testing CI/CD"   # plain text, shown in the banner
 ACCENT = "#bf2525"                          # any hex colour for the banner stripe
