@@ -1,4 +1,4 @@
-import pytest
+import pytest # type: ignore
 
 import config
 from app import MAX_NOTE_LENGTH, app, notes
