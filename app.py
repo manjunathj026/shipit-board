@@ -1,10 +1,12 @@
+import config
+import datetime
 import os
 import socket
-import datetime
+
 
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 
-import config
+
 
 app = Flask(__name__)
 
