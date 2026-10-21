@@ -14,7 +14,7 @@ app = Flask(__name__)
 notes = []
 MAX_NOTE_LENGTH = 120
 
-STARTED_AT = datetime.now(timezone.utc).strftime("%d %b %Y %H:%M UTC")
+STARTED_AT = datetime.now(datetime.UTC).strftime("%d %b %Y %H:%M UTC")
 
 
 def build_info():
